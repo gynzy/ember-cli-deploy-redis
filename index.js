@@ -54,6 +54,7 @@ module.exports = {
           var redisOptions = this.pluginConfig;
           redisOptions.port = this.readConfig('port');
           redisOptions.activationSuffix = this.readConfig('activationSuffix');
+          redisOptions.sentinels = this.readConfig('sentinels');
 
           return new Redis(redisOptions, redisLib);
         },
@@ -98,7 +99,7 @@ module.exports = {
         var keyPrefix         = this.readConfig('keyPrefix');
 
         var revisionKey = redisDeployClient.activeRevision(keyPrefix);
-        
+
         return {
           revisionData: {
             previousRevisionKey: revisionKey
@@ -136,7 +137,7 @@ module.exports = {
       fetchInitialRevisions: function(/* context */) {
         var redisDeployClient = this.readConfig('redisDeployClient');
         var keyPrefix = this.readConfig('keyPrefix');
-        
+
         this.log('Listing initial revisions for key: `' + keyPrefix + '`', { verbose: true });
         return Promise.resolve(redisDeployClient.fetchRevisions(keyPrefix))
           .then(function(revisions) {
