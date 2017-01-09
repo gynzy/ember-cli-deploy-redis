@@ -56,6 +56,12 @@ module.exports = {
           redisOptions.activationSuffix = this.readConfig('activationSuffix');
           redisOptions.sentinels = this.readConfig('sentinels');
 
+          if (redisOptions.sentinels.length > 0) {
+              this.log('Using sentinels support: ', redisOptions.sentinels);
+          } else {
+            this.log('No sentinels in configuration.');
+          }
+
           return new Redis(redisOptions, redisLib);
         },
 
